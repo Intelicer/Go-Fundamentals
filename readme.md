@@ -197,7 +197,7 @@ if !isAdult {  // Negation
 - ✅ If-else statements
 - ✅ Logical AND (`&&`) operator
 - ✅ Logical OR (`||`) operator
-- ✅ Loop control (`continue`, `break`)
+- ✅ Loop control (`continue`)
 - ✅ Combining conditions
 
 ### Logical Operators:
@@ -241,14 +241,6 @@ for i, val := range names {
     }
     fmt.Println(val)
 }
-
-// break - exit loop entirely
-for i, val := range names {
-    if i == 1 {
-        break  // Stop loop
-    }
-    fmt.Println(val)
-}
 ```
 
 ---
@@ -266,7 +258,7 @@ for i, val := range names {
 
 ### Function Syntax:
 ```go
-// Basic function (no return)
+// Basic function (no return) same as void in other languages
 func sayHello(name string) {
     fmt.Println("Hello", name)
 }
@@ -351,7 +343,7 @@ if err != nil {
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Go 1.25 or higher installed
+- Go 1.16 or higher installed
 - Basic understanding of programming concepts
 
 ### Running the Examples
@@ -416,22 +408,11 @@ if err != nil {
 
 ---
 
-## 📚 Additional Resources
+## 📚 Resources
 
 - [Official Go Documentation](https://go.dev/doc/)
 - [Go by Example](https://gobyexample.com/)
 - [Effective Go](https://go.dev/doc/effective_go)
-- [Go Playground](https://go.dev/play/) - Test code online
-
----
-
-## 🤝 Contributing
-
-Feel free to:
-- Add more examples
-- Improve documentation
-- Fix errors or typos
-- Suggest new topics
 
 ---
 
@@ -443,7 +424,5 @@ Feel free to:
 - Code follows Go conventions and best practices
 
 ---
-
-**Happy Learning! 🎉**
 
 *Last Updated: January 12, 2026*
