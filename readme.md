@@ -107,7 +107,6 @@ sort.Strings(names)                 // Alphabetical sort
 
 ### Topics Covered:
 - ✅ Traditional for loop (C-style)
-- ✅ While-style loop (condition only)
 - ✅ Index-based iteration
 - ✅ Range-based iteration
 - ✅ Underscore `_` for unused variables
@@ -118,15 +117,6 @@ sort.Strings(names)                 // Alphabetical sort
 ```go
 for i := 0; i < 5; i++ {
     fmt.Println(i)
-}
-```
-
-#### While-Style Loop
-```go
-x := 1
-for x <= 5 {  // No "while" keyword in Go
-    fmt.Println(x)
-    x++
 }
 ```
 
