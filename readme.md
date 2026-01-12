@@ -351,7 +351,7 @@ if err != nil {
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Go 1.16 or higher installed
+- Go 1.25 or higher installed
 - Basic understanding of programming concepts
 
 ### Running the Examples
