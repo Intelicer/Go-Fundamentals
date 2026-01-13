@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+    "fmt"
+    "12-StructsCustomType/structs"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+    p := structs.NewPerson("Mahmoud", 20)
+    fmt.Printf("Name: %s, Age: %d\n", p.Name, p.Age)
 }
