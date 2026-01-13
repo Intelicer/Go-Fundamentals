@@ -3,35 +3,35 @@ package main
 import "fmt"
 
 func main() {
-	menu := map[string]float64{
-		"soup": 4.18,
-		"rice": 1.98,
-	}
+    // Creating a map with string keys and float64 values
+    // Syntax: map[keyType]valueType
+    menu := map[string]float64{
+        "soup": 4.18,
+        "rice": 1.98,
+    }
 
-	// fmt.Println(menu)
+    // Access a value by its key
+    fmt.Println(menu["rice"]) // Output: 1.98
 
-	fmt.Println(menu["rice"])
+    // Loop through a map using range
+    // Each iteration gives you a key and its value
+    for key, value := range menu {
+        fmt.Println(key, value)
+    }
 
-	//map loop
-	for key,value := range menu {
-		fmt.Println(key, value)
-	}
+    // Maps can use different types as keys (here: int keys, string values)
+    phonebook := map[int]string{
+        2675884967: "Random",
+        96700651:   "Mahmoud",
+        83828492:   "Idiot",
+    }
 
+    // Access a value using an int key
+    fmt.Println(phonebook[96700651]) // Output: Mahmoud
 
-	// ints as key type
+    // Update a value by assigning to an existing key
+    phonebook[96700651] = "non of your business"
 
-	phonebook := map[int]string{
-		2675884967 : "Random",
-		96700651 : "Mahmoud",
-		83828492 : "Idiot",
-	}
-	// for key,value := range phonebook {
-	// 	fmt.Println(key, value)
-	// }
-	
-	fmt.Println(phonebook[96700651])
-	
-	phonebook[96700651] = "non of your business"
-	
-	fmt.Println(phonebook[96700651])
+    // Print the updated value
+    fmt.Println(phonebook[96700651]) // Output: non of your business
 }

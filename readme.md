@@ -12,6 +12,13 @@ A comprehensive collection of Go programming examples covering core language con
 6. [Expressions & Control Flow](#05-expressions--control-flow)
 7. [Functions](#06-functions)
 8. [Multiple Return Values](#07-multiple-return-values)
+9. [Package Scope](#08-package-scope)
+10. [Maps](#09-maps)
+11. [Pass By Value](#10-pass-by-value)
+12. [Pointers](#11-pointers)
+13. [Structs & Custom Types](#12-structs--custom-types)
+14. [Receiver Functions (Methods)](#13-receiver-functions-methods)
+15. [User Input](#14-user-input)
 
 ---
 
@@ -113,30 +120,20 @@ sort.Strings(names)                 // Alphabetical sort
 
 ### Loop Patterns:
 
-#### Traditional For Loop
 ```go
+// Traditional for loop
 for i := 0; i < 5; i++ {
     fmt.Println(i)
 }
-```
 
-#### Range Over Slice
-```go
-names := []string{"Alice", "Bob", "Charlie"}
-
-// With index and value
+// Range over slice
 for index, value := range names {
     fmt.Printf("%d: %s\n", index, value)
 }
 
-// Value only (ignore index)
+// Ignore index with _
 for _, value := range names {
     fmt.Println(value)
-}
-
-// Index only (ignore value)
-for index := range names {
-    fmt.Println(index)
 }
 ```
 
@@ -148,34 +145,9 @@ for index := range names {
 
 ### Topics Covered:
 - ✅ Boolean type declaration
-- ✅ Comparison operators
+- ✅ Comparison operators (`==`, `!=`, `<`, `>`, `<=`, `>=`)
 - ✅ Boolean expressions
 - ✅ Negation with `!` operator
-
-### Comparison Operators:
-
-| Operator | Meaning | Example |
-|----------|---------|---------|
-| `==` | Equal to | `age == 23` |
-| `!=` | Not equal | `age != 23` |
-| `<` | Less than | `age < 30` |
-| `>` | Greater than | `age > 20` |
-| `<=` | Less or equal | `age <= 50` |
-| `>=` | Greater or equal | `age >= 18` |
-
-### Boolean Logic:
-```go
-isAdult := age >= 18
-hasLicense := true
-
-if isAdult && hasLicense {
-    fmt.Println("Can drive")
-}
-
-if !isAdult {  // Negation
-    fmt.Println("Not an adult")
-}
-```
 
 ---
 
@@ -185,53 +157,9 @@ if !isAdult {  // Negation
 
 ### Topics Covered:
 - ✅ If-else statements
-- ✅ Logical AND (`&&`) operator
-- ✅ Logical OR (`||`) operator
+- ✅ Logical AND (`&&`) and OR (`||`) operators
 - ✅ Loop control (`continue`)
 - ✅ Combining conditions
-
-### Logical Operators:
-
-#### AND (`&&`) - Both must be true
-```go
-if age > 20 && age < 30 {
-    fmt.Println("Age is 20-30")
-}
-```
-
-**Truth Table:**
-| A | B | A && B |
-|---|---|--------|
-| T | T | **T** |
-| T | F | F |
-| F | T | F |
-| F | F | F |
-
-#### OR (`||`) - At least one must be true
-```go
-if isWeekend || isHoliday {
-    fmt.Println("Can rest!")
-}
-```
-
-**Truth Table:**
-| A | B | A \|\| B |
-|---|---|----------|
-| T | T | **T** |
-| T | F | **T** |
-| F | T | **T** |
-| F | F | F |
-
-### Loop Control:
-```go
-// continue - skip to next iteration
-for i, val := range names {
-    if i == 1 {
-        continue  // Skip this iteration
-    }
-    fmt.Println(val)
-}
-```
 
 ---
 
@@ -242,13 +170,11 @@ for i, val := range names {
 ### Topics Covered:
 - ✅ Function definitions
 - ✅ Parameters and return types
-- ✅ Functions with return values
 - ✅ Higher-order functions (functions as parameters)
 - ✅ Math package usage
 
-### Function Syntax:
 ```go
-// Basic function (no return) same as void in other languages
+// Basic function
 func sayHello(name string) {
     fmt.Println("Hello", name)
 }
@@ -257,25 +183,6 @@ func sayHello(name string) {
 func circleArea(radius float64) float64 {
     return math.Pi * math.Pow(radius, 2)
 }
-
-// Higher-order function (takes function as parameter)
-func process(items []string, fn func(string)) {
-    for _, item := range items {
-        fn(item)  // Call the passed function
-    }
-}
-```
-
-### Usage Examples:
-```go
-// Call basic function
-sayHello("Alice")
-
-// Store returned value
-area := circleArea(10.5)
-
-// Pass function as argument
-process(names, sayHello)  // No () after sayHello
 ```
 
 ---
@@ -288,45 +195,243 @@ process(names, sayHello)  // No () after sayHello
 - ✅ Functions returning multiple values
 - ✅ Unpacking multiple returns
 - ✅ Using underscore to ignore returns
-- ✅ String slicing and manipulation
-- ✅ Handling edge cases
 
-### Multiple Return Syntax:
 ```go
-// Function returning TWO values
 func getInitials(name string) (string, string) {
     parts := strings.Split(name, " ")
-    if len(parts) > 1 {
-        return parts[0][:1], parts[1][:1]
-    }
-    return parts[0][:1], "_"
+    return parts[0][:1], parts[1][:1]
 }
 
-// Unpack both values
-first, last := getInitials("John Doe")  // first="J", last="D"
-
-// Ignore one value
-first, _ := getInitials("Madonna")      // first="M", ignore second
+first, last := getInitials("John Doe")
 ```
 
-### Common Pattern - Error Handling:
+---
+
+## 08. Package Scope
+
+**Files:** `08-PackageScope/main.go`, `package1/Package1.go`, `package2/Package2.go`
+
+### Topics Covered:
+- ✅ Creating and importing packages
+- ✅ Public vs private (exported vs unexported)
+- ✅ Package organization
+
+### Key Concepts:
 ```go
-// Common Go idiom: return value and error
-func divide(a, b float64) (float64, error) {
-    if b == 0 {
-        return 0, errors.New("division by zero")
-    }
-    return a / b, nil
+// Uppercase = Public (exported) - accessible from other packages
+func PublicFunction() { }
+var PublicVar = "visible"
+
+// Lowercase = Private (unexported) - only in this package
+func privateFunction() { }
+var privateVar = "hidden"
+```
+
+### Package Structure:
+```
+08-PackageScope/
+├── main.go           // imports package1 and package2
+├── package1/
+│   └── Package1.go   // package package1
+└── package2/
+    └── Package2.go   // package package2
+```
+
+---
+
+## 09. Maps
+
+**File:** `09-Maps/maps.go`
+
+### Topics Covered:
+- ✅ Creating maps with different key/value types
+- ✅ Accessing values by key
+- ✅ Updating map values
+- ✅ Looping through maps
+
+### Key Concepts:
+```go
+// Create a map: map[keyType]valueType
+menu := map[string]float64{
+    "soup": 4.18,
+    "rice": 1.98,
+}
+
+// Access a value
+fmt.Println(menu["rice"])  // 1.98
+
+// Update a value
+menu["rice"] = 2.50
+
+// Loop through map
+for key, value := range menu {
+    fmt.Println(key, value)
+}
+```
+
+---
+
+## 10. Pass By Value
+
+**File:** `10-PassByValue/PassByValue.go`
+
+### Topics Covered:
+- ✅ Go passes copies by default (pass by value)
+- ✅ Using pointers to modify original values
+- ✅ Returning new values as alternative
+- ✅ Maps are reference types (no pointer needed)
+
+### Key Concepts:
+```go
+// Pass by value - does NOT modify original
+func updateName(name string) {
+    name = "new"  // Only changes local copy
+}
+
+// Pass by pointer - DOES modify original
+func updateNamePtr(name *string) {
+    *name = "new"  // Changes original
+}
+
+// Maps are reference types - no pointer needed
+func updateMenu(m map[string]float64) {
+    m["coffee"] = 2.50  // Modifies original map
+}
+```
+
+---
+
+## 11. Pointers
+
+**File:** `11-Pointers/pointer.go`
+
+### Topics Covered:
+- ✅ Getting memory address with `&`
+- ✅ Dereferencing with `*`
+- ✅ Pointer types (`*string`, `*int`, etc.)
+- ✅ Modifying values through pointers
+
+### Quick Reference:
+```go
+name := "mahmoud"
+
+// & = get memory address
+fmt.Println(&name)  // 0xc0000140a0
+
+// *type = pointer type
+func update(name *string) {
+    *name = "new"  // * = value at address
+}
+
+update(&name)  // Pass address
+```
+
+| Symbol | Meaning | Example |
+|--------|---------|---------|
+| `&var` | Get address of var | `&name` |
+| `*ptr` | Get value at address | `*name = "new"` |
+| `*type` | Pointer type | `func(n *string)` |
+
+---
+
+## 12. Structs & Custom Types
+
+**Files:** `12-StructsCustomType/main.go`, `structs/Person.go`
+
+### Topics Covered:
+- ✅ Defining structs
+- ✅ Creating struct instances
+- ✅ Accessing struct fields
+- ✅ Constructor functions
+
+### Key Concepts:
+```go
+// Define a struct
+type Person struct {
+    Name string
+    Age  int
+}
+
+// Constructor function (convention: NewTypeName)
+func NewPerson(name string, age int) Person {
+    return Person{Name: name, Age: age}
 }
 
 // Usage
-result, err := divide(10, 2)
-if err != nil {
-    fmt.Println("Error:", err)
-} else {
-    fmt.Println("Result:", result)
-}
+person := NewPerson("Mahmoud", 20)
+fmt.Println(person.Name)  // Access field
 ```
+
+---
+
+## 13. Receiver Functions (Methods)
+
+**Files:** `13-ReciverFunctionsWithAndWithoutPointers/main.go`, `structs/Person.go`
+
+### Topics Covered:
+- ✅ Value receivers (work on copy)
+- ✅ Pointer receivers (modify original)
+- ✅ Public vs private methods
+- ✅ Method chaining patterns
+
+### Key Concepts:
+```go
+// Value receiver - works on a COPY
+func (p Person) GetName() string {
+    return p.Name
+}
+
+// Pointer receiver - modifies ORIGINAL
+func (p *Person) UpdateAge(newAge int) {
+    p.Age = newAge
+}
+
+// Usage
+person := NewPerson("Mahmoud", 20)
+person.UpdateAge(25)  // Go auto-converts to pointer
+```
+
+### When to Use:
+| Receiver Type | Use When |
+|---------------|----------|
+| Value `(p Person)` | Read-only, small structs |
+| Pointer `(p *Person)` | Need to modify, large structs |
+
+---
+
+## 14. User Input
+
+**Files:** `14-UserInput/main.go`, `structs/Person.go`
+
+### Topics Covered:
+- ✅ Reading from stdin with `bufio`
+- ✅ Parsing user input
+- ✅ Input validation loops
+- ✅ Converting strings to other types
+
+### Key Concepts:
+```go
+// Create a reader for keyboard input
+reader := bufio.NewReader(os.Stdin)
+
+// Read until Enter is pressed
+input, _ := reader.ReadString('\n')
+
+// Clean up the input
+input = strings.TrimSpace(input)
+
+// Convert to other types
+age, _ := strconv.Atoi(input)  // string to int
+```
+
+### Common Functions:
+| Function | Purpose |
+|----------|---------|
+| `bufio.NewReader(os.Stdin)` | Create input reader |
+| `reader.ReadString('\n')` | Read until Enter |
+| `strings.TrimSpace(s)` | Remove whitespace |
+| `strings.ToUpper(s)` | Convert to uppercase |
+| `strconv.Atoi(s)` | String to int |
 
 ---
 
@@ -338,20 +443,13 @@ if err != nil {
 
 ### Running the Examples
 
-1. **Navigate to a module folder:**
-   ```bash
-   cd 00-intro
-   ```
+```bash
+# Navigate to a module folder
+cd 00-intro
 
-2. **Run the Go file:**
-   ```bash
-   go run Intro.go
-   ```
-
-3. **Experiment:**
-   - Uncomment different functions in `main()`
-   - Modify values and observe outputs
-   - Read the inline comments for explanations
+# Run the Go file
+go run Intro.go
+```
 
 ---
 
@@ -359,60 +457,33 @@ if err != nil {
 
 **Recommended Order:**
 
-1. Start with **00-intro** to understand variables and types
-2. Move to **01-Array** for collections
-3. Learn **03-Loops** for iteration
-4. Study **04-Bool** and **05-expression** for logic
-5. Master **06-Functions** and **07-MultipleReturn** for code organization
-6. Explore **02-STD** for standard library usage
+1. **00-intro** → Variables and types
+2. **01-Array** → Collections
+3. **03-Loops** → Iteration
+4. **04-Bool** & **05-expression** → Logic
+5. **06-Functions** & **07-MultipleReturn** → Code organization
+6. **08-PackageScope** → Project structure
+7. **09-Maps** → Key-value data
+8. **10-PassByValue** & **11-Pointers** → Memory concepts
+9. **12-Structs** & **13-ReceiverFunctions** → Custom types
+10. **14-UserInput** → Interactive programs
 
 ---
 
 ## 💡 Key Takeaways
 
-### Variable Declaration
-- Use `:=` for new variables (most common)
-- Use `=` for existing variables
-- `var` keyword for explicit types or zero values
-
-### Collections
-- **Arrays**: Fixed size, rarely used
-- **Slices**: Dynamic, use `append()` to grow
-
-### Loops
-- Only `for` loop exists in Go (no `while`)
-- `range` is preferred for iterating collections
-- Use `_` to ignore unused values
-
-### Functions
-- Can return multiple values (unique to Go)
-- Functions are first-class (can be passed as parameters)
-- Named return values are possible but optional
-
-### Best Practices
-- ✅ Prefer short variable declaration `:=`
-- ✅ Use `range` for cleaner loops
-- ✅ Handle multiple returns explicitly
-- ✅ Use meaningful variable names
-- ✅ Comment complex logic
+| Concept | Summary |
+|---------|---------|
+| Variables | Use `:=` for new, `=` for existing |
+| Collections | Prefer slices over arrays |
+| Loops | Only `for` exists, use `range` |
+| Functions | Can return multiple values |
+| Packages | Uppercase = public, lowercase = private |
+| Maps | Reference type, key-value pairs |
+| Pointers | `&` = address, `*` = value at address |
+| Structs | Group related data, use constructors |
+| Methods | Pointer receiver to modify original |
 
 ---
 
-## 📚 Resources
-
-- [Official Go Documentation](https://go.dev/doc/)
-- [Go by Example](https://gobyexample.com/)
-- [Effective Go](https://go.dev/doc/effective_go)
-
----
-
-## 📝 Notes
-
-- All code is heavily commented for educational purposes
-- Examples progress from simple to complex
-- Each file is self-contained and runnable
-- Code follows Go conventions and best practices
-
----
-
-*Last Updated: January 12, 2026*
+*Last Updated: January 13, 2026*

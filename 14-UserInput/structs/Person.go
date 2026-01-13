@@ -70,16 +70,18 @@ func (person *Person) AddExtraInformation(infoType string, details string) {
 // sortInformation sorts the Information map alphabetically by key
 // Lowercase first letter = private (only accessible in this package)
 func (person *Person) sortInformation() {
-    // Step 1: Extract all keys into a slice
+    // Step 1: Create a slice to hold all keys
     keys := make([]string, 0, len(person.Information))
+
+    // Step 2: Extract all keys from the map
     for key := range person.Information {
         keys = append(keys, key)
     }
 
-    // Step 2: Sort the keys alphabetically
+    // Step 3: Sort the keys alphabetically
     sort.Strings(keys)
 
-    // Step 3: Rebuild the map in sorted order
+    // Step 4: Rebuild the map in sorted order
     newInfo := make(map[string]string)
     for _, key := range keys {
         newInfo[key] = person.Information[key]

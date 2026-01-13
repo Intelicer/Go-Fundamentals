@@ -3,43 +3,65 @@ package main
 import "fmt"
 
 func main() {
-	name := "mahmoud"
+    // =====================
+    // PASS BY VALUE VS POINTERS
+    // =====================
 
-	updateName(&name)
+    name := "mahmoud"
 
-	name = updateName2(name)
+    // Solution 1: Use a pointer to modify the original variable
+    updateName(&name) // Pass the memory address of 'name'
 
-	fmt.Println(name)
+    // Solution 2: Return a new value and reassign it
+    name = updateName2(name)
 
+    fmt.Println(name) // Output: testing out
 
+    // =====================
+    // MAPS ARE REFERENCE TYPES
+    // =====================
 
-	menu := map[string]float64{
-		"pie":55.0,
-		"ice":14.2,
-	}
+    // Maps are passed by reference automatically
+    // Changes inside a function affect the original map
+    menu := map[string]float64{
+        "pie": 55.0,
+        "ice": 14.2,
+    }
 
-	updateMenu(menu, "coffee", 2.1)
+    // No need to use pointers - the map is modified directly
+    updateMenu(menu, "coffee", 2.1)
 
-	for key,value := range menu {
-		fmt.Println(key, value)
-	}
-
+    // Print all menu items (now includes "coffee")
+    for key, value := range menu {
+        fmt.Println(key, value)
+    }
 }
 
-//solution1
+// =====================
+// SOLUTION 1: POINTERS
+// =====================
 
-//adding pointer as parameter and then use the reference of the name we want to change
-func updateName(name *string){
-	*name = "run"
+// Use a pointer (*string) to modify the original variable
+// The * means "the value at this address"
+func updateName(name *string) {
+    *name = "run" // Dereference and update the original
 }
 
-//solution2
+// =====================
+// SOLUTION 2: RETURN VALUE
+// =====================
 
-func updateName2(name string) string{
-	name = "testing out"
-	return name
+// Pass by value (copy), modify it, and return the new value
+func updateName2(name string) string {
+    name = "testing out"
+    return name // Caller must reassign: name = updateName2(name)
 }
 
-func updateMenu(menuToChange map[string]float64, productName string, price float64){
-	menuToChange[productName] = price
+// =====================
+// MAPS (REFERENCE TYPE)
+// =====================
+
+// Maps don't need pointers - they're reference types by default
+func updateMenu(menuToChange map[string]float64, productName string, price float64) {
+    menuToChange[productName] = price // Modifies the original map
 }
